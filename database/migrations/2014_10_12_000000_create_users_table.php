@@ -14,18 +14,25 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('Roll Number');
-            $table->string('Username');
+            $table->engine = 'InnoDB';
+
+            $table->Increments('id');
+            $table->integer('roll_Number')->unique();
+            $table->string('name');
             $table->integer('year');
-            $table->boolean('fee status')->default(false);
-            $table->boolean('result status')->default(false);
-            $table->integer('UTR number');
+            $table->boolean('fee_Status')->default(false);
+            $table->boolean('result_Status')->default(false);
+            $table->integer('UTR_number')->unique();
             $table->boolean('fine')->default(false);
             $table->char('gender', 1);
-            $table->integer('Room id')->length(3);
+            $table->integer('User_Room_id')->unsigned()->index();
+           // $table->index('User_Room_id');
+           // $table->foreign('User_Room_id')->references('Room_id')->on('rooms');
+
             $table->timestamps();
         });
+        
+  
     }
 
     /**
