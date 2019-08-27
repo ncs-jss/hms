@@ -18,7 +18,7 @@ Route::get('/', function () {
 // Route::get('/selectroommates', function () {
 //     return view('selectroommates');
 // });
-
+Route::post('/searchRoommates','SearchRoommatesController@store');
 
 Route::get('/searchroommates', function () {
     return view('searchroommates');

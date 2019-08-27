@@ -51,16 +51,16 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            // 'name' => ['required', 'string', 'max:255'],
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
-            // 'mobile_number' => 'required|unique:users|min:10|max:10',
-            // 'admission_number' => 'required|unique:users|min:7|max:7',
-            // 'roll_number' =>'required|unique:users|min:11|max:11',
-            // 'year'=>'required',
-            // 'gender'=>'required',
-            // 'is_hosteler'=>'required',
-            // 'type' => User::DEFAULT_TYPE, 
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'mobile_number' => 'required|unique:users|min:10|max:10',
+            'admission_number' => 'required|unique:users|min:5|max:8',
+            'roll_number' =>'required|unique:users|min:11|max:11',
+            'year'=>'required',
+            'gender'=>'required|in:Male,Female',
+            'is_hosteler'=>'required|in:1,0',
+            'type' => User::DEFAULT_TYPE
             
         ]);
     }
@@ -95,5 +95,7 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
+            Session::flash('message', 'This is a message!'); 
+Session::flash('alert-class', 'alert-danger'); 
     }
 }

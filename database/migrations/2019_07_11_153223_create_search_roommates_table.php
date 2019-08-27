@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestsTable extends Migration
+class CreateSearchRoommatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('search_roommates', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->Increments('id');
@@ -25,7 +25,7 @@ class CreateRequestsTable extends Migration
             $table->boolean('status_3')->default(false);
             $table->timestamps();
         });
-        Schema::table('requests', function (Blueprint $table) {
+        Schema::table('search_roommates', function (Blueprint $table) {
         $table->foreign('user_1_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('user_2_id')->references('id')->on('users')->onDelete('cascade');
         $table->foreign('user_3_id')->references('id')->on('users')->onDelete('cascade');
@@ -40,9 +40,9 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('search_roommates');
 
-        Schema::table('requests', function (Blueprint $table) {
+        Schema::table('search_roommates', function (Blueprint $table) {
 
             $table->dropForeign('requests_user_1_id_foreign');
             $table->dropColumn('user_1_id');

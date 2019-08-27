@@ -10,12 +10,14 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        @include('errors')
+
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocregisus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -26,7 +28,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -40,7 +42,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -54,7 +56,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -62,10 +64,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="admission_number" class="col-md-4 col-form-label text-md-right">{{ __('Admission Number:') }}</label>
+                            <label for="admission_number" class="col-md-4 col-form-label text-md-right">{{ __('Admission Number:') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
-                                <input id="admission_number" type="text" class="form-control" name="admission_number" placeholder="17CS057" required autocomplete="admission_number" >
+                                <input id="admission_number" type="text" class="form-control" name="admission_number" placeholder="17CS057" value="{{ old('admission_number') }}" required autocomplete="admission_number" >
 
                                 @error('admission_number')
                                 <span class="invalid-feedback" role="alert">
@@ -76,10 +78,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="roll_number" class="col-md-4 col-form-label text-md-right">{{ __('University Roll Number:') }}</label>
+                            <label for="roll_number" class="col-md-4 col-form-label text-md-right">{{ __('University Roll Number:') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
-                                <input id="roll_number" type="text" class="form-control" name="roll_number" placeholder="11-digits University Roll Number" required autocomplete="roll_number" >
+                                <input id="roll_number" type="text" class="form-control" name="roll_number" placeholder="11-digits University Roll Number" value="{{ old('roll_number') }}" required autocomplete="roll_number" >
                                 @error('roll_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -89,10 +91,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="mobile_number" class="col-md-4 col-form-label text-md-right">{{ __('Mobile Number:') }}</label>
+                            <label for="mobile_number" class="col-md-4 col-form-label text-md-right">{{ __('Mobile Number:') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
-                                <input id="mobile_number" type="text" class="form-control" name="mobile_number" placeholder="Enter Mobile Number" required autocomplete="mobile_number" >
+                                <input id="mobile_number" type="text" class="form-control" name="mobile_number" placeholder="Enter Mobile Number" value="{{ old('mobile_number') }}" required autocomplete="mobile_number" >
                                 @error('mobile_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -102,7 +104,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="year" class="col-md-4 col-form-label text-md-right">{{ __('Year :') }}</label>
+                            <label for="year" class="col-md-4 col-form-label text-md-right">{{ __('Year :') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
                                 <select class="custom-select my-1 mr-sm-2" id="year" name="year">
@@ -121,11 +123,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender :') }}</label>
+                            <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender :') }}<span style="color: red;"> *</span></label>
 
                             <div class="col-md-6">
-                                <input type="radio" name="gender" value="Male"> Male<br>
-                                <input type="radio" name="gender" value="Female"> Female<br>
+                                <input type="radio" name="gender" value="Male" {{ (old('gender') == 'Male') ? 'checked' : '' }}> Male<br>
+                                <input type="radio" name="gender" value="Female" {{ (old('gender') == 'Female') ? 'checked' : '' }}> Female<br>
 
                                 @error('gender')
                                 <span class="invalid-feedback" role="alert">
@@ -136,11 +138,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="is_hosteler" class="col-md-4 col-form-label text-md-right">{{ __('Are you a Hosteller of last year ?') }}</label><br>
+                            <label for="is_hosteler" class="col-md-4 col-form-label text-md-right">{{ __('Are you a Hosteller of last year ?') }}<span style="color: red;"> *</span></label><br>
 
                             <div class="col-md-6">
-                                <input type="radio" name="is_hosteler" value="1"> Yes<br>
-                                <input type="radio" name="is_hosteler" value="0"> No<br>
+                                <input type="radio" name="is_hosteler" value="1" {{ (old('is_hosteler') == '1') ? 'checked' : '' }}> Yes<br>
+                                <input type="radio" name="is_hosteler" value="0" {{ (old('is_hosteler') == '0') ? 'checked' : '' }}> No<br>
 
                                 @error('is_hosteler')
                                 <span class="invalid-feedback" role="alert">
@@ -156,7 +158,11 @@
                                     {{ __('Register') }}
                                 </button>
                             </div>
+                        </div><br>
+                        <div class="alert alert-info" role="alert">
+                            The fields marked as <span style="color: red;">*</span> are mandatory.
                         </div>
+
                     </form>
                 </div>
             </div>
