@@ -136,11 +136,11 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
         $this->guard()->login($user);
-        $state = Str::random(40)
+        $state = Str::random(40);
 
         return response(['user' => $user,
-                            'token' =>$state 
-    ]);
+            'token' =>$state 
+        ]);
 
     // event(new Registered($user = $this->create($request->all())));
 
@@ -151,32 +151,37 @@ class RegisterController extends Controller
     public function login(){ 
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
             $user = Auth::user(); 
-            $success['token'] =  
+            $success['token'] = Str::random(40); 
             return response()->json(['success' => $success], $this-> successStatus); 
         } 
         else{ 
-         $this->validate($request, [
+           $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
         ]);
 
-         $url=config('infoConnectApi.url');
-         $postData = array(
+           $url=config('infoConnectApi.url');
+           $postData = array(
             'username' => $request->input('username'),
             'password' => $request->input('password')
         );
-         $url=config('infoConnectApi.url');
+           $url=config('infoConnectApi.url');
 
-         $client = new Client(); 
-         $result = $client->post($url,$postData);
+           $client = new Client(); 
+           $result = $client->post($url,$postData);
         //API URL
 
-         $arr = json_decode($result, true);
-         
+           $arr = json_decode($result, true);
+           $state = Str::random(40);
+           $user = new User;
+           $user->name = $arr['first_name'];
+           $user->addmission_number = $arr['username'];
+           $user->token= $state;
+
+           return response()->json(['success' => $user], $this-> successStatus); 
 
 
-
-
-    } 
+       } 
+   }
 }
 
