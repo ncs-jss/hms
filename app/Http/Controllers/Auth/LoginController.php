@@ -37,4 +37,38 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    public function login(){ 
+        if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
+            $user = Auth::user(); 
+            $success['token'] = Str::random(40); 
+            return response()->json(['success' => $success], $this-> successStatus); 
+        } 
+        else{ 
+           $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+           $url=config('infoConnectApi.url');
+           $postData = array(
+            'username' => $request->input('username'),
+            'password' => $request->input('password')
+        );
+           $url=config('infoConnectApi.url');
+
+           $client = new Client(); 
+           $result = $client->post($url,$postData);
+        //API URL
+
+           $arr = json_decode($result, true);
+           $state = Str::random(40);
+           $user = new User;
+           $user->name = $arr['first_name'];
+           $user->addmission_number = $arr['username'];
+           $user->token= $state;
+
+           return response()->json(['success' => $user], $this-> successStatus); 
+
+
+       } 
 }
