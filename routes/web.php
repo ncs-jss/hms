@@ -25,8 +25,9 @@ Route::get('/searchroommates', function () {
 });
 
 Auth::routes();
-
+       // Passport::routes(); 
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
+
 Route::get('/searchroommates', 'SearchController@search')->middleware('auth');
 
 Route::post('/selectroommates/{user}', 'HomeController@update_utr')->middleware('auth')->name('update_utr');

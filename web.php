@@ -27,7 +27,7 @@ Route::get('/searchroommates', function () {
 // Route::get('/addrooms', 'AdminController@addrooms');
 
 Auth::routes();
-
+ Passport::routes();
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 Route::get('/searchroommates', 'SearchController@search')->middleware('auth');
 

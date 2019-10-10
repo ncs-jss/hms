@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use Laravel\Passport\Passport;
 use Illuminate\Contracts\Auth\Access\Gate;
 //use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -24,11 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(Gate $gate)
     {
         $this->registerPolicies();
-         Passport::routes(); 
+        Passport::routes();
         $gate->before(function ($user){
             return $user->isAdmin();
         });
     }
+    // app.
 
        
 

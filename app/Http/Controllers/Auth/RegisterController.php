@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+
 
 class RegisterController extends Controller
 {
@@ -48,6 +51,8 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+    public $successStatus = 200;
+
     protected function validator(array $data)
     {
         // dd('hello');
@@ -101,30 +106,85 @@ class RegisterController extends Controller
         // }
         // else
         // {
-            return User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'mobile_number' =>  $data['mobile_number'],
-                'admission_number' =>  $data['admission_number'],
-                'roll_number' => $data['roll_number'],
-                'year'=> $data['year'],
-                'gender'=> $data['gender'],
-                'is_hosteler'=> $data['is_hosteler'],
-                 
-            ]);
-    // }
-}
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'mobile_number' =>  $data['mobile_number'],
+            'admission_number' =>  $data['admission_number'],
+            'roll_number' => $data['roll_number'],
+            'year'=> $data['year'],
+            'gender'=> $data['gender'],
+            'is_hosteler'=> $data['is_hosteler'],
 
-public function register(Request $request)
-{
+        ]);
+    // }
+    }
+
+    public function register(Request $request)
+    {
 
     //dd("helo");
-    $this->validator($request->all())->validate();
+    // $this->validator($request->all())->validate();
 
-    event(new Registered($user = $this->create($request->all())));
+        $errors = $this->validator($request->all())->errors();
 
-    return $this->registered($request, $user)
-    ?: redirect($this->redirectPath());
+        if(count($errors))
+        {
+            return response(['errors' => $errors], 401);
+        }
+
+        event(new Registered($user = $this->create($request->all())));
+        $this->guard()->login($user);
+
+
+        return response(['user' => $user]);
+
+    // event(new Registered($user = $this->create($request->all())));
+
+    // return $this->registered($request, $user)
+    // ?: redirect($this->redirectPath());
+    }
+
+    public function login(){ 
+        if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
+            $user = Auth::user(); 
+            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+            return response()->json(['success' => $success], $this-> successStatus); 
+        } 
+        else{ 
+         $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+         $url=config('infoConnectApi.url');
+         $postData = array(
+            'username' => $request->input('username'),
+            'password' => $request->input('password')
+        );
+         $url=config('infoConnectApi.url');
+
+         $client = new Client(); 
+         $result = $client->post($url,$postData);
+        //API URL
+
+         $arr = json_decode($output, true);
+         if (array_key_exists('username', $arr)) {
+            $user = User::select('id')->where('admission_number', '=', $arr['username'])->first();
+
+            $user = Auth::user();
+            $state = Str::random(40) 
+            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+            return response()->json(['success' => $success], $this-> successStatus); 
+        } 
+        else{ 
+            return response()->json(['error'=>'Unauthorised'], 401); 
+        }
+
+
+
+
+    } 
 }
-}
+

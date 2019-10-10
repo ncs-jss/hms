@@ -39,6 +39,7 @@ class CreateUsersTable extends Migration
             $table->string('bank_address')->default('none');
             $table->string('deposit_date')->default('none');
             $table->biginteger('amount')->default('0');
+            $table->string('access_token');
 
 
             $table->rememberToken();
