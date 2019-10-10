@@ -136,9 +136,11 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
         $this->guard()->login($user);
+        $state = Str::random(40)
 
-
-        return response(['user' => $user]);
+        return response(['user' => $user,
+                            'token' =>$state 
+    ]);
 
     // event(new Registered($user = $this->create($request->all())));
 
@@ -149,7 +151,7 @@ class RegisterController extends Controller
     public function login(){ 
         if(Auth::attempt(['username' => request('username'), 'password' => request('password')])){ 
             $user = Auth::user(); 
-            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+            $success['token'] =  
             return response()->json(['success' => $success], $this-> successStatus); 
         } 
         else{ 
@@ -169,18 +171,8 @@ class RegisterController extends Controller
          $result = $client->post($url,$postData);
         //API URL
 
-         $arr = json_decode($output, true);
-         if (array_key_exists('username', $arr)) {
-            $user = User::select('id')->where('admission_number', '=', $arr['username'])->first();
-
-            $user = Auth::user();
-            $state = Str::random(40) 
-            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
-            return response()->json(['success' => $success], $this-> successStatus); 
-        } 
-        else{ 
-            return response()->json(['error'=>'Unauthorised'], 401); 
-        }
+         $arr = json_decode($result, true);
+         
 
 
 
